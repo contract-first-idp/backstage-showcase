@@ -76,9 +76,10 @@ integrations:
       token: ${AZURE_TOKEN}
 
   # Plugin: Bitbucket Server
+  # https://backstage.io/docs/integrations/bitbucketServer/discovery/
   bitbucketServer:
     - host: ${BITBUCKET_SERVER_HOST}
-      apiBaseUrl: ${BITBUCKET_API_BASE_URL}
+      apiBaseUrl: ${BITBUCKET_SERVER_API_BASE_URL}
       username: ${BITBUCKET_SERVER_USERNAME}
       password: ${BITBUCKET_SERVER_PASSWORD}
 
@@ -92,59 +93,13 @@ proxy:
   endpoints:
     # Plugin: Quay
     '/quay/api':
-      target: https://quay.io/
+      target: 'https://quay.io/'
       headers:
         X-Requested-With: 'XMLHttpRequest'
         # Uncomment the following line to access a private Quay Repository using a token
         # Authorization: 'Bearer <YOUR TOKEN>'
       changeOrigin: true
       secure: true
-
-    # Plugin: SonarQube
-    '/sonarqube':
-      # if not using sonarqube, assign SONARQUBE_URL to https://sonarcloud.io
-      # target: https://sonarcloud.io/api
-      target: ${SONARQUBE_URL}/api
-      allowedMethods: ['GET']
-      auth: ${SONARQUBE_TOKEN}
-
-    # Plugin: Jenkins
-    '/jenkins/api':
-      target: ${JENKINS_URL}
-      headers:
-        Authorization: ${JENKINS_TOKEN}
-
-    # Plugin: Jira
-    '/jira/api':
-      target: ${JIRA_URL}
-      headers:
-        Authorization: ${JIRA_TOKEN}
-        Accept: 'application/json'
-        Content-Type: 'application/json'
-        X-Atlassian-Token: 'no-check'
-        User-Agent: ${JIRA_USER_AGENT}
-
-    # Plugin: Jfrog Artifactory
-    '/jfrog-artifactory/api':
-      target: ${ARTIFACTORY_URL}
-      headers:
-        Authorization: Bearer ${ARTIFACTORY_TOKEN}
-      # Change to "false" in case of using self hosted artifactory instance with a self-signed certificate
-      secure: ${ARTIFACTORY_SECURE}
-
-    # Plugin: PagerDuty
-    '/pagerduty':
-      target: https://api.pagerduty.com
-      headers:
-        Authorization: Token token=${PAGERDUTY_TOKEN}
-
-    # Plugin: Dynatrace
-    '/dynatrace':
-      target: ${DYNATRACE_API_URL}
-      headers:
-        # This API access token requires entities.read and problems.read permissions
-        # For more info on how to generate this token: https://www.dynatrace.com/support/help/dynatrace-api/basics/dynatrace-api-authentication
-        Authorization: 'Api-Token ${DYNATRACE_ACCESS_TOKEN}'
 
 
 # Reference documentation http://backstage.io/docs/features/techdocs/configuration
@@ -229,6 +184,20 @@ catalog:
     microsoftGraphOrg:
       default:
         tenantId: ${AZURE_TENANT_ID}
+
+    # Bitbucket Server Discovery
+    bitbucketServer:
+      yourProviderId: # identifies your ingested dataset
+        host: 'https://bitbucket.org/'
+        catalogPath: /catalog-info.yaml # default value
+        filters: # optional
+          projectKey: '^apis-.*$' # optional; RegExp
+          repoSlug: '^service-.*$' # optional; RegExp
+        schedule: # optional; same options as in TaskScheduleDefinition
+          # supports cron, ISO duration, "human duration" as used in code
+          frequency: { minutes: 30 }
+          # supports ISO duration, "human duration" as used in code
+          timeout: { minutes: 3 }
 
 # Plugin: Kubernetes, OCM
 kubernetes:
@@ -321,12 +290,13 @@ enabled:
   jenkins: ${JENKINS_ENABLED}
   permission: ${PERMISSION_ENABLED}
   azureAd: ${AZURE_AD_ENABLED}
+  bitbucketDiscovery: ${BITBUCKET_DISCOVERY_ENABLED}
 
 # Plugin Confluence
 confluence:
   # Confluence base URL for wiki API
   # Typically: https://{org-name}.atlassian.net/wiki
-  wikiUrl: ${CONFLUENCE_URL}
+  wikiUrl: https://wiki.atlassian.net
 
   # List of spaces to index
   # See https://confluence.atlassian.com/conf59/spaces-792498593.html
@@ -334,7 +304,7 @@ confluence:
 
   # Authentication credentials towards Confluence API
   auth:
-    username: ${CONFLUENCE_USERNAME}
+    username: username
     # While Confluence supports BASIC authentication, using an API token is preferred.
     # See: https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/
-    password: ${CONFLUENCE_PASSWORD}
+    password: password

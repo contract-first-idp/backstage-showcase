@@ -26,6 +26,7 @@
     "@backstage/plugin-auth-node": "0.2.19",
     "@backstage/plugin-azure-devops-backend": "0.3.29",
     "@backstage/plugin-catalog-backend": "1.12.3",
+    "@backstage/plugin-catalog-backend-module-bitbucket-server": "^0.1.19",
     "@backstage/plugin-catalog-backend-module-github": "0.3.6",
     "@backstage/plugin-catalog-backend-module-gitlab": "0.2.6",
     "@backstage/plugin-catalog-backend-module-msgraph": "^0.5.13",
