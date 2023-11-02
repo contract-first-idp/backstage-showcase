@@ -93,13 +93,60 @@ proxy:
   endpoints:
     # Plugin: Quay
     '/quay/api':
-      target: 'https://quay.io/'
+      target: https://quay.io/
       headers:
         X-Requested-With: 'XMLHttpRequest'
         # Uncomment the following line to access a private Quay Repository using a token
         # Authorization: 'Bearer <YOUR TOKEN>'
       changeOrigin: true
       secure: true
+
+    # Plugin: SonarQube
+    '/sonarqube':
+      # if not using sonarqube, assign SONARQUBE_URL to https://sonarcloud.io
+      # target: https://sonarcloud.io/api
+      target: ${SONARQUBE_URL}/api
+      allowedMethods: ['GET']
+      auth: ${SONARQUBE_TOKEN}
+
+    # Plugin: Jenkins
+    '/jenkins/api':
+      target: ${JENKINS_URL}
+      headers:
+        Authorization: ${JENKINS_TOKEN}
+
+    # Plugin: Jira
+    '/jira/api':
+      target: ${JIRA_URL}
+      headers:
+        Authorization: ${JIRA_TOKEN}
+        Accept: 'application/json'
+        Content-Type: 'application/json'
+        X-Atlassian-Token: 'no-check'
+        User-Agent: ${JIRA_USER_AGENT}
+
+    # Plugin: Jfrog Artifactory
+    '/jfrog-artifactory/api':
+      target: ${ARTIFACTORY_URL}
+      headers:
+        Authorization: Bearer ${ARTIFACTORY_TOKEN}
+      # Change to "false" in case of using self hosted artifactory instance with a self-signed certificate
+      secure: ${ARTIFACTORY_SECURE}
+
+    # Plugin: PagerDuty
+    '/pagerduty':
+      target: https://api.pagerduty.com
+      headers:
+        Authorization: Token token=${PAGERDUTY_TOKEN}
+
+    # Plugin: Dynatrace
+    '/dynatrace':
+      target: ${DYNATRACE_API_URL}
+      headers:
+        # This API access token requires entities.read and problems.read permissions
+        # For more info on how to generate this token: https://www.dynatrace.com/support/help/dynatrace-api/basics/dynatrace-api-authentication
+        Authorization: 'Api-Token ${DYNATRACE_ACCESS_TOKEN}'
+
 
 
 # Reference documentation http://backstage.io/docs/features/techdocs/configuration
@@ -296,7 +343,7 @@ enabled:
 confluence:
   # Confluence base URL for wiki API
   # Typically: https://{org-name}.atlassian.net/wiki
-  wikiUrl: https://wiki.atlassian.net
+  wikiUrl: ${CONFLUENCE_URL}
 
   # List of spaces to index
   # See https://confluence.atlassian.com/conf59/spaces-792498593.html
@@ -304,7 +351,7 @@ confluence:
 
   # Authentication credentials towards Confluence API
   auth:
-    username: username
+    username: ${CONFLUENCE_USERNAME}
     # While Confluence supports BASIC authentication, using an API token is preferred.
     # See: https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/
-    password: password
+    password: ${CONFLUENCE_PASSWORD}
