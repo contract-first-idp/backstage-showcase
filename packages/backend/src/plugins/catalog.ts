@@ -14,6 +14,7 @@ import { PluginEnvironment } from '../types';
 import { MicrocksApiEntityProvider } from '@microcks/microcks-backstage-provider';
 import { ThreeScaleApiEntityProvider } from '@janus-idp/backstage-plugin-3scale-backend';
 import { MicrosoftGraphOrgEntityProvider } from '@backstage/plugin-catalog-backend-module-msgraph';
+import { BitbucketServerEntityProvider } from '@backstage/plugin-catalog-backend-module-bitbucket-server';
 
 export default async function createPlugin(
   env: PluginEnvironment,
@@ -35,6 +36,8 @@ export default async function createPlugin(
     env.config.getOptionalBoolean('enabled.threescale') || false;
   const isAzureAdEnabled =
     env.config.getOptionalBoolean('enabled.azureAd') || false;
+  const isBitbucketDiscoveryEnabled =
+    env.config.getOptionalBoolean('enabled.bitbucketDiscovery') || false;
 
   if (isOcmEnabled) {
     builder.addEntityProvider(
@@ -142,6 +145,21 @@ export default async function createPlugin(
           timeout: { minutes: 50 },
           initialDelay: { seconds: 15 },
         }),
+      }),
+    );
+  }
+
+  if (isBitbucketDiscoveryEnabled) {
+    builder.addEntityProvider(
+      BitbucketServerEntityProvider.fromConfig(env.config, {
+        logger: env.logger,
+        // optional: alternatively, use scheduler with schedule defined in app-config.yaml
+        schedule: env.scheduler.createScheduledTaskRunner({
+          frequency: { minutes: 30 },
+          timeout: { minutes: 3 },
+        }),
+        // optional: alternatively, use schedule
+        scheduler: env.scheduler,
       }),
     );
   }

@@ -3403,6 +3403,24 @@
     luxon "^3.0.0"
     react-use "^17.2.4"
 
+"@backstage/plugin-catalog-backend-module-bitbucket-server@^0.1.19":
+  version "0.1.19"
+  resolved "https://registry.yarnpkg.com/@backstage/plugin-catalog-backend-module-bitbucket-server/-/plugin-catalog-backend-module-bitbucket-server-0.1.19.tgz#2ea7846f51ced85eff5e25257414f07d74846ed1"
+  integrity sha512-z7AL56F4MXtIY91rSHYM+tMOMxF5B4j6hCvoqgk2dr0B1nsvPz533cA8fJghLLzNDtBqzygMVbr9i39aIpk/iQ==
+  dependencies:
+    "@backstage/backend-common" "^0.19.8"
+    "@backstage/backend-plugin-api" "^0.6.6"
+    "@backstage/backend-tasks" "^0.5.11"
+    "@backstage/catalog-model" "^1.4.3"
+    "@backstage/config" "^1.1.1"
+    "@backstage/errors" "^1.2.3"
+    "@backstage/integration" "^1.7.1"
+    "@backstage/plugin-catalog-node" "^1.4.7"
+    "@types/node-fetch" "^2.5.12"
+    node-fetch "^2.6.7"
+    uuid "^8.0.0"
+    winston "^3.2.1"
+
 "@backstage/plugin-catalog-backend-module-github@0.3.6":
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/@backstage/plugin-catalog-backend-module-github/-/plugin-catalog-backend-module-github-0.3.6.tgz#f8a716e11fb88bce118db98471548bc32fa3b1de"

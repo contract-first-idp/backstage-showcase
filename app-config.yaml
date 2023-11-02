@@ -76,9 +76,10 @@ integrations:
       token: ${AZURE_TOKEN}
 
   # Plugin: Bitbucket Server
+  # https://backstage.io/docs/integrations/bitbucketServer/discovery/
   bitbucketServer:
     - host: ${BITBUCKET_SERVER_HOST}
-      apiBaseUrl: ${BITBUCKET_API_BASE_URL}
+      apiBaseUrl: ${BITBUCKET_SERVER_API_BASE_URL}
       username: ${BITBUCKET_SERVER_USERNAME}
       password: ${BITBUCKET_SERVER_PASSWORD}
 
@@ -145,6 +146,7 @@ proxy:
         # This API access token requires entities.read and problems.read permissions
         # For more info on how to generate this token: https://www.dynatrace.com/support/help/dynatrace-api/basics/dynatrace-api-authentication
         Authorization: 'Api-Token ${DYNATRACE_ACCESS_TOKEN}'
+
 
 
 # Reference documentation http://backstage.io/docs/features/techdocs/configuration
@@ -229,6 +231,20 @@ catalog:
     microsoftGraphOrg:
       default:
         tenantId: ${AZURE_TENANT_ID}
+
+    # Bitbucket Server Discovery
+    bitbucketServer:
+      yourProviderId: # identifies your ingested dataset
+        host: 'https://bitbucket.org/'
+        catalogPath: /catalog-info.yaml # default value
+        filters: # optional
+          projectKey: '^apis-.*$' # optional; RegExp
+          repoSlug: '^service-.*$' # optional; RegExp
+        schedule: # optional; same options as in TaskScheduleDefinition
+          # supports cron, ISO duration, "human duration" as used in code
+          frequency: { minutes: 30 }
+          # supports ISO duration, "human duration" as used in code
+          timeout: { minutes: 3 }
 
 # Plugin: Kubernetes, OCM
 kubernetes:
@@ -321,6 +337,7 @@ enabled:
   jenkins: ${JENKINS_ENABLED}
   permission: ${PERMISSION_ENABLED}
   azureAd: ${AZURE_AD_ENABLED}
+  bitbucketDiscovery: ${BITBUCKET_DISCOVERY_ENABLED}
 
 # Plugin Confluence
 confluence:
