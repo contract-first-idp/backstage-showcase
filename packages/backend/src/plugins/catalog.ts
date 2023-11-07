@@ -153,12 +153,6 @@ export default async function createPlugin(
     builder.addEntityProvider(
       BitbucketServerEntityProvider.fromConfig(env.config, {
         logger: env.logger,
-        // optional: alternatively, use scheduler with schedule defined in app-config.yaml
-        schedule: env.scheduler.createScheduledTaskRunner({
-          frequency: { minutes: 30 },
-          timeout: { minutes: 3 },
-        }),
-        // optional: alternatively, use schedule
         scheduler: env.scheduler,
       }),
     );
