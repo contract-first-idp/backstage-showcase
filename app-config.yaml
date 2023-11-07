@@ -75,14 +75,6 @@ integrations:
     - host: dev.azure.com
       token: ${AZURE_TOKEN}
 
-  # Plugin: Bitbucket Server
-  # https://backstage.io/docs/integrations/bitbucketServer/discovery/
-  bitbucketServer:
-    - host: ${BITBUCKET_SERVER_HOST}
-      apiBaseUrl: ${BITBUCKET_SERVER_API_BASE_URL}
-      username: ${BITBUCKET_SERVER_USERNAME}
-      password: ${BITBUCKET_SERVER_PASSWORD}
-
 # Plugin: Azure DevOps
 azureDevOps:
   host: dev.azure.com
@@ -231,20 +223,6 @@ catalog:
     microsoftGraphOrg:
       default:
         tenantId: ${AZURE_TENANT_ID}
-
-    # Bitbucket Server Discovery
-    bitbucketServer:
-      yourProviderId: # identifies your ingested dataset
-        host: 'https://bitbucket.org/'
-        catalogPath: /catalog-info.yaml # default value
-        filters: # optional
-          projectKey: '^apis-.*$' # optional; RegExp
-          repoSlug: '^service-.*$' # optional; RegExp
-        schedule: # optional; same options as in TaskScheduleDefinition
-          # supports cron, ISO duration, "human duration" as used in code
-          frequency: { minutes: 30 }
-          # supports ISO duration, "human duration" as used in code
-          timeout: { minutes: 3 }
 
 # Plugin: Kubernetes, OCM
 kubernetes:
