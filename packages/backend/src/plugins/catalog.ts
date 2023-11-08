@@ -57,11 +57,7 @@ export default async function createPlugin(
       KeycloakOrgEntityProvider.fromConfig(env.config, {
         id: 'development',
         logger: env.logger,
-        schedule: env.scheduler.createScheduledTaskRunner({
-          frequency: { hours: 1 },
-          timeout: { minutes: 50 },
-          initialDelay: { seconds: 15 },
-        }),
+        scheduler: env.scheduler,
       }),
     );
   }
@@ -140,11 +136,7 @@ export default async function createPlugin(
     builder.addEntityProvider(
       MicrosoftGraphOrgEntityProvider.fromConfig(env.config, {
         logger: env.logger,
-        schedule: env.scheduler.createScheduledTaskRunner({
-          frequency: { hours: 1 },
-          timeout: { minutes: 50 },
-          initialDelay: { seconds: 15 },
-        }),
+        scheduler: env.scheduler,
       }),
     );
   }
@@ -153,12 +145,6 @@ export default async function createPlugin(
     builder.addEntityProvider(
       BitbucketServerEntityProvider.fromConfig(env.config, {
         logger: env.logger,
-        // optional: alternatively, use scheduler with schedule defined in app-config.yaml
-        schedule: env.scheduler.createScheduledTaskRunner({
-          frequency: { minutes: 30 },
-          timeout: { minutes: 3 },
-        }),
-        // optional: alternatively, use schedule
         scheduler: env.scheduler,
       }),
     );
